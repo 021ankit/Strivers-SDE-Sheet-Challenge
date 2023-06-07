@@ -1,9 +1,9 @@
 #include <bits/stdc++.h> 
-long long cnt=0;
-void merge(long long *arr,int low,int mid,int high)
+
+long long merge(long long *arr,int low,int mid,int high)
 {
   int i=low,j=mid+1;
-  
+  long long cnt=0;
    vector<long long>temp;
 
   while(i<=mid && j<=high)
@@ -21,16 +21,18 @@ void merge(long long *arr,int low,int mid,int high)
     temp.push_back(arr[j++]);
    for(i=low; i<=high; i++)
     arr[i]=temp[i-low];
+    return cnt;
 }
-void mergesort(long long *arr,int low,int high)
+long long mergesort(long long *arr,int low,int high)
 {
-    if(low>=high)   return;
+    if(low>=high)   return 0;
     int mid=(low+high)/2;
-    mergesort(arr,low,mid);
-    mergesort(arr,mid+1,high);
-    merge(arr,low,mid,high);
+    long long cnt=0;
+    cnt+=mergesort(arr,low,mid);
+    cnt+=mergesort(arr,mid+1,high);
+    cnt+=merge(arr,low,mid,high);
+    return cnt;
 }
 long long getInversions(long long *arr, int n){
-     mergesort(arr,0,n-1);
-     return cnt;
+     return mergesort(arr,0,n-1);
 }
