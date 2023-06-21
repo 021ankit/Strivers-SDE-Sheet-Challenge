@@ -1,30 +1,30 @@
-Node* merge(Node* head1,Node* head2)
-{
-    Node *dummy=new Node(-1);
-    Node *ptr=dummy;
-    while(head1 && head2)
-    {
-        if(head1->data <= head2->data)
-        {
-            ptr->bottom=head1;
-            head1=head1->bottom;
+Node* mergeTwoLists(Node* a, Node* b) {
+
+    Node *temp = new Node(0);
+    Node *res = temp; 
+
+    while(a != NULL && b != NULL) {
+        if(a->data < b->data) {
+            temp->child = a; 
+            temp = temp->child; 
+            a = a->child; 
         }
-        else
-        {
-            ptr->bottom=head2;
-            head2=head2->bottom;   
+        else {
+            temp->child = b;
+            temp = temp->child; 
+            b = b->child; 
         }
-        ptr=ptr->bottom;
     }
-    if(head1) ptr->bottom=head1;
-    if(head2) ptr->bottom=head2;
-    return dummy->bottom;
+    if(a) temp->child = a; 
+    else temp->child = b; 
+    return res -> child; 
 }
-Node *flatten(Node *root)
+
+Node* flattenLinkedList(Node* head) 
 {
-   if(!root || !root->next) return root;
-   
-   root->next= flatten(root->next);
-   root= merge(root,root->next);
-   return root;
+    if(head == NULL || head->next == NULL) return head;
+    Node* L2 = flattenLinkedList(head->next);
+    head->next = NULL;
+    Node* nhead = mergeTwoLists(head, L2);
+    return nhead;
 }
